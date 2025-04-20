@@ -1,10 +1,14 @@
 import pytest
 
+import datetime
+
 from ..src.tasks import (
     filter_tasks_by_category,
     filter_tasks_by_completion,
     generate_unique_id,
     filter_tasks_by_priority,
+    get_overdue_tasks,
+    search_tasks,
 )
 
 
@@ -77,3 +81,70 @@ def test_filter_tasks_by_completion():
     uncompleted = filter_tasks_by_completion(tasks, False)
     assert len(uncompleted) == 2
     assert all(t["completed"] == False for t in uncompleted)
+
+
+def test_search_tasks():
+    tasks = [
+        {"id": 0, "title": "Task0", "description": "description0"},
+        {"id": 1, "title": "Task1", "description": "sample text"},
+        {"id": 2, "title": "Coding", "description": "number 2"},
+        {"id": 3, "title": "Task3", "description": "idk"},
+    ]
+
+    sample = search_tasks(tasks, "sample")
+    assert len(sample) == 1
+    assert sample[0]["id"] == 1
+
+    coding = search_tasks(tasks, "Coding")
+    assert len(coding) == 1
+    assert coding[0]["id"] == 2
+
+    anything_with_task = search_tasks(tasks, "Task")
+    assert len(anything_with_task) == 3
+    assert all(t["id"] != 2 for t in anything_with_task)
+
+    assert len(search_tasks(tasks, "no_matches")) == 0
+
+
+def test_get_overdue_tasks():
+    tasks = [
+        # Overdue
+        {
+            "id": 0,
+            "completed": False,
+            "due_date": datetime.datetime(2015, 1, 1).strftime("%Y-%m-%d"),
+        },
+        {
+            "id": 1,
+            "completed": False,
+            "due_date": datetime.datetime(2020, 1, 1).strftime("%Y-%m-%d"),
+        },
+        # Old but completed
+        {
+            "id": 2,
+            "completed": True,
+            "due_date": datetime.datetime(2015, 1, 1).strftime("%Y-%m-%d"),
+        },
+        # Not completed, but in future
+        {
+            "id": 3,
+            "completed": False,
+            "due_date": datetime.datetime(3000, 1, 1).strftime("%Y-%m-%d"),
+        },
+        {
+            "id": 4,
+            "completed": False,
+            "due_date": datetime.datetime(3300, 1, 1).strftime("%Y-%m-%d"),
+        },
+        # Completed not yet due
+        {
+            "id": 5,
+            "completed": True,
+            "due_date": datetime.datetime(3000, 1, 1).strftime("%Y-%m-%d"),
+        },
+    ]
+
+    overdue = get_overdue_tasks(tasks)
+    assert len(overdue) == 2
+    assert tasks[0] in overdue
+    assert tasks[1] in overdue
