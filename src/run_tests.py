@@ -3,13 +3,15 @@ import os
 import pytest
 
 
-def run_basic_tests():
+def run_basic_tests() -> int:
+    """Returns exit code"""
     filename = os.path.join(getTestDir(), "test_basic.py")
-    run_test(filename)
+    return run_test(filename)
 
 
-def run_test(filename):
-    pytest.main([filename])
+def run_test(filename) -> int:
+    """Returns exit code"""
+    return pytest.main([filename])
 
 
 def getTestDir() -> str:

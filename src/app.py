@@ -1,11 +1,14 @@
 import streamlit as st
 from datetime import datetime
+
 from tasks import (
     load_tasks,
     save_tasks,
     filter_tasks_by_priority,
     filter_tasks_by_category,
 )
+
+from run_tests import run_basic_tests
 
 
 def main():
@@ -95,6 +98,17 @@ def main():
                 tasks = [t for t in tasks if t["id"] != task["id"]]
                 save_tasks(tasks)
                 st.rerun()
+
+    # Buttons to run tests
+    st.header("Tests")
+
+    if st.button("Basic tests"):
+        with st.status("Running tests...") as status:
+            exit_code = run_basic_tests()
+            if exit_code:
+                status.update(
+                    label=f"Pytest exited with code {exit_code}", state="error"
+                )
 
 
 if __name__ == "__main__":
