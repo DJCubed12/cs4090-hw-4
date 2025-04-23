@@ -18,12 +18,12 @@ TEST_DIR = os.path.dirname(__file__)
 
 
 def test_generate_unique_id_empty():
-    assert generate_unique_id([]), 1
+    assert generate_unique_id([]) == 1
 
 
 def test_generate_unique_id_not_empty():
     tasks = [{"id": 0}, {"id": 2}, {"id": 1}]
-    assert generate_unique_id(tasks), 3
+    assert generate_unique_id(tasks) == 3
 
 
 def test_filter_tasks_by_priority():
