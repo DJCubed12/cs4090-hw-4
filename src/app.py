@@ -8,7 +8,7 @@ from tasks import (
     filter_tasks_by_category,
 )
 
-from run_tests import run_basic_tests
+from run_tests import run_basic_tests, run_coverage_test
 
 
 def main():
@@ -108,6 +108,18 @@ def main():
             if exit_code:
                 status.update(
                     label=f"Pytest exited with code {exit_code}", state="error"
+                )
+    if st.button("Coverage test"):
+        with st.status("Running tests...") as status:
+            exit_code = run_coverage_test()
+            if exit_code:
+                status.update(
+                    label=f"Pytest exited with code {exit_code}. Coverage statistics saved at src/.coverage",
+                    state="error",
+                )
+            else:
+                status.update(
+                    label="Coverage statistics saved at src/.coverage", state="complete"
                 )
 
 

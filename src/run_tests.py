@@ -9,6 +9,11 @@ def run_basic_tests() -> int:
     return run_test(filename)
 
 
+def run_coverage_test() -> int:
+    root_dir, _ = os.path.split(getTestDir())
+    return pytest.main([root_dir, "--cov"])
+
+
 def run_test(filename) -> int:
     """Returns exit code"""
     return pytest.main([filename])
@@ -29,4 +34,5 @@ if __name__ == "__main__":
     testDir = getTestDir()
     print("Test dir is", getTestDir())
 
-    run_basic_tests()
+    # run_basic_tests()
+    run_coverage_test()
