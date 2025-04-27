@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # File path for task storage
 DEFAULT_TASKS_FILE = "tasks.json"
@@ -131,3 +131,9 @@ def get_overdue_tasks(tasks):
         for task in tasks
         if not task.get("completed", False) and task.get("due_date", "") < today
     ]
+
+
+def extend_task_due_date(task, days):
+    due_date = datetime.strptime(task.get("due_date"), "%Y-%m-%d")
+    new_date = due_date + timedelta(days)
+    task["due_date"] = new_date.strftime("%Y-%m-%d")

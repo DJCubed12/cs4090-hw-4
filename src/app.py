@@ -7,6 +7,7 @@ from tasks import (
     generate_unique_id,
     filter_tasks_by_priority,
     filter_tasks_by_category,
+    extend_task_due_date,
 )
 
 from run_tests import (
@@ -103,6 +104,10 @@ def main():
                         st.rerun()
             if st.button("Delete", key=f"delete_{task['id']}"):
                 tasks = [t for t in tasks if t["id"] != task["id"]]
+                save_tasks(tasks)
+                st.rerun()
+            if st.button("Extend", key=f"extend_{task['id']}"):
+                extend_task_due_date(task, 1)
                 save_tasks(tasks)
                 st.rerun()
 
