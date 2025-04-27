@@ -16,6 +16,7 @@ from run_tests import (
     run_basic_tests,
     run_coverage_test,
     run_fixtured_tests,
+    run_tdd_tests,
     run_test_with_html_report,
     run_parameterized_tests,
 )
@@ -159,6 +160,13 @@ def main():
         with st.status("Running tests...") as status:
             report_path = run_test_with_html_report()
             status.update(label=f"HTML report saved to {report_path}")
+    if st.button("TDD tests"):
+        with st.status("Running tests...") as status:
+            exit_code = run_tdd_tests()
+            if exit_code:
+                status.update(
+                    label=f"Pytest exited with code {exit_code}", state="error"
+                )
 
 
 if __name__ == "__main__":
