@@ -10,8 +10,15 @@ def run_basic_tests() -> int:
 
 
 def run_coverage_test() -> int:
+    """Returns exit code"""
     root_dir, _ = os.path.split(getTestDir())
     return pytest.main([root_dir, "--cov"])
+
+
+def run_test_with_html_report() -> int:
+    """Returns the absolute path to the report file"""
+    pytest.main([str(getTestDir()), "--html=report.html"])
+    return os.path.join(os.getcwd(), "report.html")
 
 
 def run_test(filename) -> int:

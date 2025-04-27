@@ -4,11 +4,12 @@ from datetime import datetime
 from tasks import (
     load_tasks,
     save_tasks,
+    generate_unique_id,
     filter_tasks_by_priority,
     filter_tasks_by_category,
 )
 
-from run_tests import run_basic_tests, run_coverage_test
+from run_tests import run_basic_tests, run_coverage_test, run_test_with_html_report
 
 
 def main():
@@ -33,7 +34,7 @@ def main():
 
         if submit_button and task_title:
             new_task = {
-                "id": len(tasks) + 1,
+                "id": generate_unique_id(tasks),
                 "title": task_title,
                 "description": task_description,
                 "priority": task_priority,
@@ -121,6 +122,10 @@ def main():
                 status.update(
                     label="Coverage statistics saved at src/.coverage", state="complete"
                 )
+    if st.button("Get HTML test report"):
+        with st.status("Running tests...") as status:
+            report_path = run_test_with_html_report()
+            status.update(label=f"HTML report saved to {report_path}")
 
 
 if __name__ == "__main__":
