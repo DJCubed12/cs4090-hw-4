@@ -2,6 +2,7 @@ import streamlit as st
 from datetime import datetime
 
 from tasks import (
+    get_first_n,
     load_tasks,
     save_tasks,
     generate_unique_id,
@@ -65,12 +66,13 @@ def main():
             "Filter by Category",
             ["All"] + list(set([task["category"] for task in tasks])),
         )
+        show_completed = st.checkbox("Show Completed Tasks")
     with col2:
         filter_priority = st.selectbox(
             "Filter by Priority", ["All", "High", "Medium", "Low"]
         )
-
-    show_completed = st.checkbox("Show Completed Tasks")
+        show_first_n = st.number_input("Only show n", -1)
+        st.caption("Use -1 to show all")
 
     # Apply filters
     filtered_tasks = tasks.copy()
@@ -81,8 +83,13 @@ def main():
     if not show_completed:
         filtered_tasks = [task for task in filtered_tasks if not task["completed"]]
 
+    # Sort and truncate
+    sorted_filtered_tasks = sort_by_due_date(filtered_tasks)
+    if show_first_n >= 0:
+        sorted_filtered_tasks = get_first_n(sorted_filtered_tasks, show_first_n)
+
     # Display tasks
-    for task in sort_by_due_date(filtered_tasks):
+    for task in sorted_filtered_tasks:
         col1, col2 = st.columns([4, 1])
         with col1:
             if task["completed"]:

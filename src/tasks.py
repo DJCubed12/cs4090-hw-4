@@ -142,3 +142,8 @@ def extend_task_due_date(task, days):
 def sort_by_due_date(tasks) -> list:
     """Get the tasks list sort by soonest due date first."""
     return sorted(tasks, key=lambda t: t["due_date"])
+
+
+def get_first_n(tasks, n) -> list:
+    """Get a shortened list of tasks."""
+    return tasks[:n]
