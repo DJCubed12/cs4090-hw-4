@@ -8,6 +8,7 @@ from tasks import (
     filter_tasks_by_priority,
     filter_tasks_by_category,
     extend_task_due_date,
+    sort_by_due_date,
 )
 
 from run_tests import (
@@ -81,7 +82,7 @@ def main():
         filtered_tasks = [task for task in filtered_tasks if not task["completed"]]
 
     # Display tasks
-    for task in filtered_tasks:
+    for task in sort_by_due_date(filtered_tasks):
         col1, col2 = st.columns([4, 1])
         with col1:
             if task["completed"]:

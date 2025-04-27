@@ -137,3 +137,8 @@ def extend_task_due_date(task, days):
     due_date = datetime.strptime(task.get("due_date"), "%Y-%m-%d")
     new_date = due_date + timedelta(days)
     task["due_date"] = new_date.strftime("%Y-%m-%d")
+
+
+def sort_by_due_date(tasks) -> list:
+    """Get the tasks list sort by soonest due date first."""
+    return sorted(tasks, key=lambda t: t["due_date"])
