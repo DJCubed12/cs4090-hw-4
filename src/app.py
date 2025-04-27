@@ -9,7 +9,12 @@ from tasks import (
     filter_tasks_by_category,
 )
 
-from run_tests import run_basic_tests, run_coverage_test, run_test_with_html_report
+from run_tests import (
+    run_basic_tests,
+    run_coverage_test,
+    run_test_with_html_report,
+    run_parameterized_tests,
+)
 
 
 def main():
@@ -106,6 +111,13 @@ def main():
     if st.button("Basic tests"):
         with st.status("Running tests...") as status:
             exit_code = run_basic_tests()
+            if exit_code:
+                status.update(
+                    label=f"Pytest exited with code {exit_code}", state="error"
+                )
+    if st.button("Parameterized tests"):
+        with st.status("Running tests...") as status:
+            exit_code = run_parameterized_tests()
             if exit_code:
                 status.update(
                     label=f"Pytest exited with code {exit_code}", state="error"

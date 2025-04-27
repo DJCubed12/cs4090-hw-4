@@ -9,6 +9,11 @@ def run_basic_tests() -> int:
     return run_test(filename)
 
 
+def run_parameterized_tests() -> int:
+    filename = os.path.join(getTestDir(), "test_parameterized.py")
+    return run_test(filename)
+
+
 def run_coverage_test() -> int:
     """Returns exit code"""
     root_dir, _ = os.path.split(getTestDir())
