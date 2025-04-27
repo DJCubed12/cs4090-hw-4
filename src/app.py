@@ -12,6 +12,7 @@ from tasks import (
 from run_tests import (
     run_basic_tests,
     run_coverage_test,
+    run_fixtured_tests,
     run_test_with_html_report,
     run_parameterized_tests,
 )
@@ -118,6 +119,13 @@ def main():
     if st.button("Parameterized tests"):
         with st.status("Running tests...") as status:
             exit_code = run_parameterized_tests()
+            if exit_code:
+                status.update(
+                    label=f"Pytest exited with code {exit_code}", state="error"
+                )
+    if st.button("Tests with fixture"):
+        with st.status("Running tests...") as status:
+            exit_code = run_fixtured_tests()
             if exit_code:
                 status.update(
                     label=f"Pytest exited with code {exit_code}", state="error"

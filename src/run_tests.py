@@ -5,24 +5,31 @@ import pytest
 
 def run_basic_tests() -> int:
     """Returns exit code"""
-    filename = os.path.join(getTestDir(), "test_basic.py")
+    filename = os.path.join(get_test_dir(), "test_basic.py")
     return run_test(filename)
 
 
 def run_parameterized_tests() -> int:
-    filename = os.path.join(getTestDir(), "test_parameterized.py")
+    """Returns exit code"""
+    filename = os.path.join(get_test_dir(), "test_parameterized.py")
+    return run_test(filename)
+
+
+def run_fixtured_tests() -> int:
+    """Returns exit code"""
+    filename = os.path.join(get_test_dir(), "test_fixtured.py")
     return run_test(filename)
 
 
 def run_coverage_test() -> int:
     """Returns exit code"""
-    root_dir, _ = os.path.split(getTestDir())
+    root_dir, _ = os.path.split(get_test_dir())
     return pytest.main([root_dir, "--cov"])
 
 
 def run_test_with_html_report() -> int:
     """Returns the absolute path to the report file"""
-    pytest.main([str(getTestDir()), "--html=report.html"])
+    pytest.main([str(get_test_dir()), "--html=report.html"])
     return os.path.join(os.getcwd(), "report.html")
 
 
@@ -31,7 +38,7 @@ def run_test(filename) -> int:
     return pytest.main([filename])
 
 
-def getTestDir() -> str:
+def get_test_dir() -> str:
     cwd = os.getcwd()
     outer_dir, inner_dir = os.path.split(cwd)
     if inner_dir == "src":
@@ -43,8 +50,8 @@ def getTestDir() -> str:
 
 
 if __name__ == "__main__":
-    testDir = getTestDir()
-    print("Test dir is", getTestDir())
+    testDir = get_test_dir()
+    print("Test dir is", get_test_dir())
 
     # run_basic_tests()
     run_coverage_test()
