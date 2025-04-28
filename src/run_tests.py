@@ -21,6 +21,12 @@ def run_fixtured_tests() -> int:
     return run_test(filename)
 
 
+def run_property_tests() -> int:
+    """Returns exit code"""
+    filename = os.path.join(get_test_dir(), "test_property.py")
+    return run_test(filename)
+
+
 def run_tdd_tests() -> int:
     """Returns exit code"""
     tdd1 = os.path.join(get_test_dir(), f"test_tdd_feature_1.py")

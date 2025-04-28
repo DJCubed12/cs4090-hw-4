@@ -7,6 +7,7 @@ from ..src.tasks import (
     extend_task_due_date,
     filter_tasks_by_completion,
     get_overdue_tasks,
+    get_first_n,
 )
 
 
@@ -70,3 +71,17 @@ def test_get_overdue_tasks(years, months, days, completed_bools):
 
     assert len(overdue_tasks) == num_overdue
     assert all(t.get("due_date") < now.strftime("%Y-%m-%d") for t in overdue_tasks)
+
+
+@given(ids=st.lists(st.integers(0), unique=True), n=st.integers(0))
+def test_get_first_n(ids, n):
+    tasks = [{"id": id} for id in ids]
+
+    short_list = get_first_n(tasks, n)
+
+    assert len(short_list) <= n
+    if len(ids) >= n:
+        assert len(short_list) == n
+
+    for i, task in enumerate(short_list):
+        assert task is tasks[i]
