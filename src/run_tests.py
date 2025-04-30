@@ -35,6 +35,12 @@ def run_tdd_tests() -> int:
     return pytest.main([tdd1, tdd2, tdd3])
 
 
+def run_bdd_tests() -> int:
+    """Returns exit code"""
+    filename = os.path.join(get_test_dir(), "feature")
+    return run_test(filename)
+
+
 def run_coverage_test() -> int:
     """Returns exit code"""
     root_dir, _ = os.path.split(get_test_dir())
@@ -67,5 +73,4 @@ if __name__ == "__main__":
     testDir = get_test_dir()
     print("Test dir is", get_test_dir())
 
-
-run_tdd_tests()
+    run_bdd_tests()

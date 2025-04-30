@@ -1,7 +1,9 @@
 .coverage
 report.html
+save_tasks_test_output.json
 assets/
 
 __pycache__/
 .pytest_cache/
 .hypothesis/
+

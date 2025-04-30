@@ -14,6 +14,7 @@ from tasks import (
 
 from run_tests import (
     run_basic_tests,
+    run_bdd_tests,
     run_coverage_test,
     run_fixtured_tests,
     run_property_tests,
@@ -164,6 +165,13 @@ def main():
     if st.button("TDD tests"):
         with st.status("Running tests...") as status:
             exit_code = run_tdd_tests()
+            if exit_code:
+                status.update(
+                    label=f"Pytest exited with code {exit_code}", state="error"
+                )
+    if st.button("BDD tests"):
+        with st.status("Running tests...") as status:
+            exit_code = run_bdd_tests()
             if exit_code:
                 status.update(
                     label=f"Pytest exited with code {exit_code}", state="error"
