@@ -1,8 +1,22 @@
 import json
 from datetime import datetime, timedelta
+from typing import Any
 
 # File path for task storage
 DEFAULT_TASKS_FILE = "tasks.json"
+
+REQUIRED_FIELDS = set(
+    [
+        "id",
+        "title",
+        "description",
+        "priority",
+        "category",
+        "due_date",
+        "completed",
+        "created_at",
+    ]
+)
 
 
 def load_tasks(file_path=DEFAULT_TASKS_FILE):
@@ -17,8 +31,13 @@ def load_tasks(file_path=DEFAULT_TASKS_FILE):
     """
     try:
         with open(file_path, "r") as f:
-            return json.load(f)
-    except FileNotFoundError:
+            data: list[dict[str, Any]] = json.load(f)
+
+        for task in data:
+            assert REQUIRED_FIELDS.issubset(task.keys())
+
+        return data
+    except (FileNotFoundError, AssertionError):
         return []
     except json.JSONDecodeError:
         # Handle corrupted JSON file
